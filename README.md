@@ -1,54 +1,68 @@
-# ERC-20 Token Faucet DApp (Sepolia)
 
-## Project Overview
+# Token Faucet DApp
 
-This project is a simple ERC-20 Token Faucet DApp deployed on the **Sepolia test network**.
-Users can connect their wallet, claim test tokens, and view balances.
-All rules like cooldowns and limits are handled **on-chain**, making the faucet secure and trustless.
-
----
-
-## Features (Simple)
-- ERC-20 token with fixed supply
-- Faucet gives a fixed number of tokens per claim
-- 24-hour cooldown per wallet
-- Maximum lifetime claim limit
-- Admin can pause or unpause the faucet
-- Clear error messages for failed actions
-- MetaMask wallet support
-- React-based frontend
-- Dockerized frontend with health check
+This repository contains a complete ERC-20 Token Faucet decentralized application developed using **Solidity, Hardhat, React (Vite), Ethers.js, Docker, and MetaMask**.  
+The application enables users to connect their wallet and receive test tokens from a faucet deployed on the **Sepolia Ethereum test network**.  
+All faucet restrictions such as cooldown periods and limits are enforced directly through smart contracts.
 
 ---
 
-## Project Structure
-### Smart Contracts
-- FaucetToken.sol
-  - ERC-20 token
-  - Fixed supply
-  - Only faucet can mint tokens
-- TokenFaucet.sol
-  - Handles token distribution
-  - Enforces cooldown and limits
-  - Allows admin pause/unpause
+## Features
+
+- Custom ERC-20 token contract
+- Faucet distributes a predefined amount of tokens per request
+- One claim allowed per wallet within a 24-hour window
+- Total claim limit applied per address
+- Admin-controlled pause and resume functionality
+- Clear on-chain revert messages for invalid actions
+- MetaMask wallet integration
+- React-based user interface
+- Frontend packaged and served using Docker
+- Health endpoint available for verification
+
+---
+
+## Architecture Overview
+
+User (Browser + MetaMask)  
+→ React Frontend (Vite + Ethers.js)  
+→ TokenFaucet Smart Contract (Sepolia)  
+→ ERC-20 FaucetToken
+
+---
+
+## Smart Contracts
+
+### FaucetToken
+- Implements the ERC-20 standard
+- Token minting is restricted to approved addresses
+- Faucet contract is the only authorized minter
+- Built using OpenZeppelin libraries for security
+
+### TokenFaucet
+- Provides token distribution functionality
+- Tracks claim timestamps to enforce cooldowns
+- Applies lifetime limits per wallet
+- Admin can pause or unpause the faucet at any time
 
 ---
 
 ## Deployed Contracts (Sepolia)
-- ERC-20 Token Contract
-https://sepolia.etherscan.io/address/0xA7AAd90B683Fd541fAB952D1f3603621a2403AB8
 
-- Faucet Contract
-https://sepolia.etherscan.io/address/0x99EfeCf8D7CBEaB70897347DcA3FD8D8975C925C
+| Contract Name | Address | Etherscan Link |
+|--------------|---------|----------------|
+| ERC-20 Token | `0xA7AAd90B683Fd541fAB952D1f3603621a2403AB8` | https://sepolia.etherscan.io/address/0xA7AAd90B683Fd541fAB952D1f3603621a2403AB8 |
+| Token Faucet | `0x99EfeCf8D7CBEaB70897347DcA3FD8D8975C925C` | https://sepolia.etherscan.io/address/0x99EfeCf8D7CBEaB70897347DcA3FD8D8975C925C |
 
-Both contracts are verified on Etherscan.
+Both contracts are deployed and verified on Etherscan.
 
 ---
 
 ## Evaluation Interface
 
-The frontend exposes simple functions for testing:
-```
+For evaluation purposes, the frontend exposes a set of helper functions:
+
+```js
 window.__EVAL__ = {
   connectWallet(),
   requestTokens(),
@@ -57,27 +71,32 @@ window.__EVAL__ = {
   getRemainingAllowance(address),
   getContractAddresses()
 }
-```
-- All values are returned as strings
-- Errors are clearly shown
+````
+
+* All outputs are returned as string values
+* Errors are surfaced clearly for debugging and validation
 
 ---
 
 ## Screenshots
-Screenshots are available in the screenshots/ folder:
-- Wallet connection
-- Token balance
-- Successful claim
-- Cooldown error
-- Transaction confirmation
+
+Application screenshots are stored in the `screenshots/` directory and showcase:
+
+* Wallet connection flow
+* Display of token balance
+* Successful token request
+* Cooldown restriction message
+* Transaction confirmation screen
 
 ---
 
 ## Testing
-Smart contracts are tested using Hardhat.
 
-Run tests using:
-```
+Smart contract logic is tested using **Hardhat**.
+
+Execute tests using:
+
+```bash
 npx hardhat test
 ```
 
@@ -85,40 +104,63 @@ npx hardhat test
 
 ## Docker Setup
 
-Run the frontend using Docker:
-```
-cp .env.example .env
+The frontend can be started using Docker:
+
+```bash
 docker compose up --build
 ```
-- App runs at: http://localhost:3000
-- Health check: http://localhost:3000/health
+
+Access points:
+
+* Application: [http://localhost:3000](http://localhost:3000)
+* Health endpoint: [http://localhost:3000/health](http://localhost:3000/health)
+
+Expected health response:
+
+```
+OK
+```
 
 ---
 
-## Environment Variables
+## Environment Configuration
 
-Create a `.env` file:
-```
+Create a `.env` file with the following variables:
+
+```env
 SEPOLIA_RPC_URL=
 PRIVATE_KEY=
 ETHERSCAN_API_KEY=
 VITE_TOKEN_ADDRESS=
 VITE_FAUCET_ADDRESS=
 ```
- Never upload real keys to GitHub.
+
+Sensitive keys should never be committed to the repository.
 
 ---
 
-## Security (Basic)
-- Only faucet can mint tokens
-- Admin-only controls
-- Cooldowns and limits enforced on-chain
-- Safe Solidity version (0.8+)
+## Security Considerations
+
+* Token minting is restricted to the faucet contract
+* Administrative actions are protected by access control
+* Cooldown and claim limits are enforced on-chain
+* Solidity version ^0.8.x ensures built-in overflow checks
 
 ---
 
-## Future Improvements
-- Admin UI
-- Support for more networks
-- Better UI design
-- Transaction history display
+## Possible Enhancements
+
+* Dedicated admin dashboard
+* Support for additional test networks
+* Improved frontend design
+* Display of claim history and transactions
+
+---
+
+## Summary
+
+This project demonstrates a functional ERC-20 token faucet deployed on the Sepolia test network.
+It combines smart contracts, automated tests, a frontend interface, and Docker support to provide a complete and evaluable Web3 application.
+
+````
+
