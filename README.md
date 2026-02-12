@@ -135,7 +135,6 @@ VITE_TOKEN_ADDRESS=
 VITE_FAUCET_ADDRESS=
 ```
 
-Sensitive keys should never be committed to the repository.
 
 ---
 
