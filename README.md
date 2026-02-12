@@ -162,5 +162,5 @@ Sensitive keys should never be committed to the repository.
 This project demonstrates a functional ERC-20 token faucet deployed on the Sepolia test network.
 It combines smart contracts, automated tests, a frontend interface, and Docker support to provide a complete and evaluable Web3 application.
 
-````
+
 
